@@ -1,227 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bold.sudoku.controller.SudokuController">
+<AnchorPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bold.sudoku.controller.SudokuController"
+            prefHeight="500.0" prefWidth="700.0"
+            style="-fx-background-color: #0d1c22;">
    <children>
-      <Button fx:id="btnAyuda" layoutX="493.0" layoutY="47.0" mnemonicParsing="false" text="Ayuda">
-         <font>
-            <Font name="MS Gothic" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnInicio" layoutX="45.0" layoutY="47.0" mnemonicParsing="false" text="Inicio">
-         <font>
-            <Font name="MS Gothic" size="12.0" />
-         </font>
-      </Button>
-      <GridPane layoutX="114.0" layoutY="76.0" prefHeight="249.0" prefWidth="372.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="42.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+
+      <!-- Fondo blanco del tablero -->
+      <Rectangle layoutX="200.0" layoutY="100.0"
+                 width="300.0" height="300.0"
+                 fill="white" stroke="black" strokeWidth="1"/>
+
+      <!-- Grid principal (6x6) -->
+      <GridPane fx:id="sudokuGrid"
+                layoutX="200.0" layoutY="100.0"
+                hgap="2" vgap="2"
+                alignment="CENTER">
          <children>
-            <TextField fx:id="cell_0_0" alignment="CENTER" prefHeight="62.0" prefWidth="62.0">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
-            <TextField alignment="CENTER" prefHeight="62.0" prefWidth="62.0" GridPane.columnIndex="5" GridPane.rowIndex="5">
-               <font>
-                  <Font name="MS Gothic" size="12.0" />
-               </font>
-            </TextField>
+
+            <!-- Generación de 36 celdas -->
+            <!-- Fila 0 -->
+            <TextField fx:id="cell00" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell01" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell02" GridPane.rowIndex="0" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell03" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell04" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell05" GridPane.rowIndex="0" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
+            <!-- Fila 1 -->
+            <TextField fx:id="cell10" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell11" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell12" GridPane.rowIndex="1" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell13" GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell14" GridPane.rowIndex="1" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell15" GridPane.rowIndex="1" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
+            <!-- Fila 2 -->
+            <TextField fx:id="cell20" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell21" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell22" GridPane.rowIndex="2" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell23" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell24" GridPane.rowIndex="2" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell25" GridPane.rowIndex="2" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
+            <!-- Fila 3 -->
+            <TextField fx:id="cell30" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell31" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell32" GridPane.rowIndex="3" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell33" GridPane.rowIndex="3" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell34" GridPane.rowIndex="3" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell35" GridPane.rowIndex="3" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
+            <!-- Fila 4 -->
+            <TextField fx:id="cell40" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell41" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell42" GridPane.rowIndex="4" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell43" GridPane.rowIndex="4" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell44" GridPane.rowIndex="4" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell45" GridPane.rowIndex="4" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
+            <!-- Fila 5 -->
+            <TextField fx:id="cell50" GridPane.rowIndex="5" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell51" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell52" GridPane.rowIndex="5" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell53" GridPane.rowIndex="5" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell54" GridPane.rowIndex="5" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell55" GridPane.rowIndex="5" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+
          </children>
       </GridPane>
-      <Label fx:id="lblMensaje" layoutX="188.0" layoutY="348.0" prefHeight="17.0" prefWidth="224.0" />
-      <Label layoutX="507.0" layoutY="100.0" prefHeight="167.0" prefWidth="186.0" />
+
+      <!-- Líneas divisorias de bloques 2x3 -->
+      <!-- horizontales después de fila 2 y 4 -->
+      <Line startX="200.0" startY="200.0" endX="500.0" endY="200.0" strokeWidth="3" stroke="black"/>
+      <Line startX="200.0" startY="300.0" endX="500.0" endY="300.0" strokeWidth="3" stroke="black"/>
+
+      <!-- vertical después de columna 3 -->
+      <Line startX="350.0" startY="100.0" endX="350.0" endY="400.0" strokeWidth="3" stroke="black"/>
+
    </children>
 </AnchorPane>
+
