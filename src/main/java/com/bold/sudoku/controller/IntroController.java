@@ -1,3 +1,6 @@
+ // Daniel Bolívar 2178545-2724
+ // Pablo Alejandro Arias 2419271-2724
+
 package com.bold.sudoku.controller;
 
 import com.bold.sudoku.Main;
