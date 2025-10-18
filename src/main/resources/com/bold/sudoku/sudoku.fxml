@@ -1,89 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.bold.sudoku.controller.SudokuController"
-            prefHeight="500.0" prefWidth="700.0"
-            style="-fx-background-color: #0d1c22;">
+<AnchorPane prefHeight="450.0" prefWidth="750.0" style="-fx-background-color: #122a24;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bold.sudoku.controller.SudokuController">
    <children>
 
       <!-- Fondo blanco del tablero -->
-      <Rectangle layoutX="200.0" layoutY="100.0"
-                 width="300.0" height="300.0"
-                 fill="white" stroke="black" strokeWidth="1"/>
+      <Rectangle fill="white" height="300.0" layoutX="225.0" layoutY="75.0" stroke="black" strokeWidth="1" width="300.0" />
 
       <!-- Grid principal (6x6) -->
-      <GridPane fx:id="sudokuGrid"
-                layoutX="200.0" layoutY="100.0"
-                hgap="2" vgap="2"
-                alignment="CENTER">
+      <GridPane fx:id="sudokuGrid" alignment="CENTER" hgap="2" layoutX="225.0" layoutY="75.0" vgap="2">
          <children>
 
             <!-- Generación de 36 celdas -->
             <!-- Fila 0 -->
-            <TextField fx:id="cell00" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell01" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell02" GridPane.rowIndex="0" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell03" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell04" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell05" GridPane.rowIndex="0" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell00" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="cell01" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField fx:id="cell02" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="cell03" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <TextField fx:id="cell04" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+            <TextField fx:id="cell05" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="0" />
 
             <!-- Fila 1 -->
-            <TextField fx:id="cell10" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell11" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell12" GridPane.rowIndex="1" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell13" GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell14" GridPane.rowIndex="1" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell15" GridPane.rowIndex="1" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell10" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.rowIndex="1" />
+            <TextField fx:id="cell11" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="cell12" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="cell13" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField fx:id="cell14" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <TextField fx:id="cell15" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
 
             <!-- Fila 2 -->
-            <TextField fx:id="cell20" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell21" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell22" GridPane.rowIndex="2" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell23" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell24" GridPane.rowIndex="2" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell25" GridPane.rowIndex="2" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell20" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.rowIndex="2" />
+            <TextField fx:id="cell21" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="cell22" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="cell23" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField fx:id="cell24" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextField fx:id="cell25" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
 
             <!-- Fila 3 -->
-            <TextField fx:id="cell30" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell31" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell32" GridPane.rowIndex="3" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell33" GridPane.rowIndex="3" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell34" GridPane.rowIndex="3" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell35" GridPane.rowIndex="3" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell30" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.rowIndex="3" />
+            <TextField fx:id="cell31" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="cell32" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="cell33" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextField fx:id="cell34" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextField fx:id="cell35" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
 
             <!-- Fila 4 -->
-            <TextField fx:id="cell40" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell41" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell42" GridPane.rowIndex="4" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell43" GridPane.rowIndex="4" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell44" GridPane.rowIndex="4" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell45" GridPane.rowIndex="4" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell40" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.rowIndex="4" />
+            <TextField fx:id="cell41" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="cell42" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextField fx:id="cell43" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextField fx:id="cell44" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <TextField fx:id="cell45" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
 
             <!-- Fila 5 -->
-            <TextField fx:id="cell50" GridPane.rowIndex="5" GridPane.columnIndex="0" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell51" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell52" GridPane.rowIndex="5" GridPane.columnIndex="2" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell53" GridPane.rowIndex="5" GridPane.columnIndex="3" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell54" GridPane.rowIndex="5" GridPane.columnIndex="4" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
-            <TextField fx:id="cell55" GridPane.rowIndex="5" GridPane.columnIndex="5" prefWidth="48" prefHeight="48" style="-fx-alignment: center;"/>
+            <TextField fx:id="cell50" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.rowIndex="5" />
+            <TextField fx:id="cell51" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="cell52" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextField fx:id="cell53" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <TextField fx:id="cell54" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <TextField fx:id="cell55" prefHeight="48" prefWidth="48" style="-fx-alignment: center;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
 
          </children>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
       </GridPane>
 
       <!-- Líneas divisorias de bloques 2x3 -->
       <!-- horizontales después de fila 2 y 4 -->
-      <Line startX="200.0" startY="200.0" endX="500.0" endY="200.0" strokeWidth="3" stroke="black"/>
-      <Line startX="200.0" startY="300.0" endX="500.0" endY="300.0" strokeWidth="3" stroke="black"/>
+      <Line endX="500.0" endY="200.0" layoutX="25.0" layoutY="-25.0" startX="200.0" startY="200.0" stroke="black" strokeWidth="3" />
+      <Line endX="500.0" endY="300.0" layoutX="25.0" layoutY="-25.0" startX="200.0" startY="300.0" stroke="black" strokeWidth="3" />
 
       <!-- vertical después de columna 3 -->
-      <Line startX="350.0" startY="100.0" endX="350.0" endY="400.0" strokeWidth="3" stroke="black"/>
+      <Line endX="350.0" endY="400.0" layoutX="25.0" layoutY="-25.0" startX="350.0" startY="100.0" stroke="black" strokeWidth="3" />
+      <Button fx:id="startSudoku" layoutX="572.0" layoutY="190.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="97.0" style="-fx-background-color: #4d8170;" text="Inicio" onAction="#handleStartButtonAction">
+         <font>
+            <Font name="MS Gothic" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="sudokuAyuda" layoutX="572.0" layoutY="228.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="97.0" style="-fx-background-color: #4d8170;" text="Ayuda">
+         <font>
+            <Font name="MS Gothic" size="20.0" />
+         </font>
+      </Button>
 
    </children>
 </AnchorPane>
-

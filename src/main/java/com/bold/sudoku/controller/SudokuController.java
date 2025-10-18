@@ -3,15 +3,28 @@ package com.bold.sudoku.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+
+// : Imports necesarios para Alertas y Botones
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class SudokuController {
 
-    @FXML
-    private GridPane sudokuGrid;
+    // --- Campos FXML Inyectados ---
+    @FXML private GridPane sudokuGrid;
 
-    // Referencias a todas las celdas de texto (TextFields)
+    // : Inyectar los nuevos botones
+    @FXML private Button startButton;
+    @FXML private Button helpButton;
+
+    // (Referencias a todas las c36 celdas FXML...)
     @FXML private TextField cell00; @FXML private TextField cell01; @FXML private TextField cell02;
     @FXML private TextField cell03; @FXML private TextField cell04; @FXML private TextField cell05;
     @FXML private TextField cell10; @FXML private TextField cell11; @FXML private TextField cell12;
@@ -27,11 +40,8 @@ public class SudokuController {
 
     // --- Campos de Lógica ---
 
-    // Matriz 2D para acceder fácilmente a las celdas por fila y columna
-    private TextField[][] cells;
+    private ArrayList<ArrayList<TextField>> cells = new ArrayList<>();
 
-    // Definición del tablero inicial (Cumple Criterio 1: 2 números por bloque 2x3)
-    // 0 representa una celda vacía.
     private final int[][] initialBoard = {
             {5, 1, 0, 0, 3, 6},
             {0, 0, 0, 0, 0, 0},
@@ -41,66 +51,126 @@ public class SudokuController {
             {0, 0, 0, 0, 0, 0}
     };
 
+    // : Lógica para HU-5 (Límite de ayudas)
+    private int hintCounter = 0;
+    private final int MAX_HINTS = 5; // Límite de 5 ayudas
+
     /**
-     * Método de inicialización. Se llama automáticamente después de cargar el FXML.
-     * Aquí es donde configuramos los listeners y comenzamos el juego.
+     * Método de inicialización
      */
     @FXML
     public void initialize() {
-        populateCellsArray();
+        populateCellsArrayList();
         setupInputListeners();
-        startNewGame();
+        // El juego ya NO inicia aquí, espera al botón.
     }
 
     /**
-     * (Historia 1) Inicia un nuevo juego.
-     * Rellena el tablero con los números iniciales y los hace no editables.
-     * Limpia las celdas que el usuario debe rellenar.
+     * : Implementa HU-2 (Inicio con confirmación)
+     * Se llama cuando se presiona el botón "Iniciar Juego".
+     */
+    @FXML
+    private void handleStartButtonAction() {
+        // Criterio de Aceptación HU-2: Alerta de confirmación
+        Optional<ButtonType> result = showAlert("Iniciar Nuevo Juego",
+                "¿Estás seguro de que quieres empezar un nuevo juego? Se perderá el progreso actual.",
+                Alert.AlertType.CONFIRMATION);
+
+        // Si el usuario presiona OK
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            hintCounter = 0; // Reinicia el contador de ayudas
+            startNewGame();
+        }
+    }
+
+    /**
+     * : Implementa HU-5 (Opción de Ayuda) [cite: 97]
+     * Se llama cuando se presiona el botón "Ayuda".
+     */
+    @FXML
+    private void handleHelpButtonAction() {
+        // Criterio HU-5: No se puede terminar el tablero con la ayuda
+        if (hintCounter >= MAX_HINTS) {
+            showAlert("Límite de Ayudas", "Has usado todas tus " + MAX_HINTS + " ayudas.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        ArrayList<ArrayList<Integer>> boardModel = getBoardModel();
+
+        // 1. Buscar una celda vacía [cite: 98]
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 6; c++) {
+                if (boardModel.get(r).get(c) == 0) {
+
+                    // 2. Encontrar un número válido (1-6) para esa celda
+                    for (int num = 1; num <= 6; num++) {
+                        if (isSafe(r, c, num, boardModel)) {
+
+                            // 3. Mostrar la sugerencia [cite: 99]
+                            TextField cell = cells.get(r).get(c);
+                            cell.setText(String.valueOf(num));
+
+                            // Criterio HU-5: Destacar visualmente [cite: 99]
+                            cell.setStyle("-fx-alignment: center; -fx-background-color: #a0e0a0;"); // Verde claro
+
+                            hintCounter++; // Incrementar el contador de ayudas
+                            showAlert("Ayuda", "Sugerencia (" + hintCounter + "/" + MAX_HINTS + ") colocada.", Alert.AlertType.INFORMATION);
+
+                            // Re-validar el tablero por si esta ayuda soluciona un error
+                            validateBoard();
+                            return; // Salir después de dar UNA sola ayuda
+                        }
+                    }
+
+                    // Si llega aquí, es una celda vacía sin solución (tablero irresoluble)
+                    showAlert("Sin Ayuda", "No se encontró un número válido para la celda vacía. Revisa tus números.", Alert.AlertType.WARNING);
+                    return;
+                }
+            }
+        }
+
+        // Si llega aquí, el tablero está lleno
+        showAlert("Tablero Completo", "No hay celdas vacías para ayudar.", Alert.AlertType.INFORMATION);
+    }
+
+    /**
+     * Lógica para rellenar el tablero (llamada por handleStartButtonAction)
      */
     private void startNewGame() {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 6; col++) {
                 int value = initialBoard[row][col];
-                TextField cell = cells[row][col];
+                TextField cell = cells.get(row).get(col);
 
                 if (value != 0) {
-                    // Celda pre-rellenada
                     cell.setText(String.valueOf(value));
                     cell.setEditable(false);
-                    // Estilo para celdas pre-rellenadas (ligeramente gris)
                     cell.setStyle("-fx-alignment: center; -fx-background-color: #f0f0f0; -fx-font-weight: bold;");
                 } else {
-                    // Celda vacía para el usuario
                     cell.setText("");
                     cell.setEditable(true);
-                    // Estilo normal
                     cell.setStyle("-fx-alignment: center;");
                 }
             }
         }
-        // Valida el tablero inicial (aunque debería ser válido por definición)
         validateBoard();
     }
 
     /**
-     * (Historia 2 y 3) Configura los listeners en cada celda editable.
-     * Esto maneja la restricción de entrada (1-6) y la validación en tiempo real.
+     * Configura los listeners para HU-3 y HU-4
      */
     private void setupInputListeners() {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 6; col++) {
-                TextField cell = cells[row][col];
+                TextField cell = cells.get(row).get(col);
 
-                // Agrega un listener a la propiedad de texto de la celda
                 cell.textProperty().addListener((observable, oldValue, newValue) -> {
-                    // --- Criterio de Aceptación (Historia 2): Permitir solo 1-6 ---
+                    // HU-3: Permitir solo 1-6 [cite: 77]
                     if (!newValue.matches("[1-6]?")) {
-                        // Si el nuevo valor no es un dígito de 1 a 6 o vacío, revierte al valor anterior.
                         cell.setText(oldValue);
                     }
 
-                    // --- Criterio de Aceptación (Historia 3): Validación en tiempo real ---
-                    // Después de cualquier cambio válido, re-valida todo el tablero.
+                    // HU-4: Validación en tiempo real [cite: 89]
                     validateBoard();
                 });
             }
@@ -108,45 +178,37 @@ public class SudokuController {
     }
 
     /**
-     * (Historia 3) Valida todo el tablero y aplica estilos de error.
-     * Comprueba filas, columnas y bloques 2x3 en busca de duplicados.
+     * Valida todo el tablero (HU-4) [cite: 87, 88]
      */
     private void validateBoard() {
-        int[][] boardModel = getBoardModel();
-        boolean[][] errorCells = new boolean[6][6];
-
-        // 1. Comprobar Filas
-        for (int r = 0; r < 6; r++) {
-            findDuplicates(boardModel, errorCells, r, 0, r, 5, true); // Comprueba fila r
+        ArrayList<ArrayList<Integer>> boardModel = getBoardModel();
+        ArrayList<ArrayList<Boolean>> errorCells = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            ArrayList<Boolean> row = new ArrayList<>();
+            for (int j = 0; j < 6; j++) { row.add(false); }
+            errorCells.add(row);
         }
 
-        // 2. Comprobar Columnas
-        for (int c = 0; c < 6; c++) {
-            findDuplicates(boardModel, errorCells, 0, c, 5, c, false); // Comprueba columna c
-        }
-
-        // 3. Comprobar Bloques 2x3
-        for (int blockRow = 0; blockRow < 6; blockRow += 2) {
-            for (int blockCol = 0; blockCol < 6; blockCol += 3) {
-                findDuplicatesInBlock(boardModel, errorCells, blockRow, blockCol);
+        // Comprobar Filas, Columnas y Bloques
+        for (int r = 0; r < 6; r++) findDuplicates(boardModel, errorCells, r, 0, r, 5, true);
+        for (int c = 0; c < 6; c++) findDuplicates(boardModel, errorCells, 0, c, 5, c, false);
+        for (int br = 0; br < 6; br += 2) {
+            for (int bc = 0; bc < 6; bc += 3) {
+                findDuplicatesInBlock(boardModel, errorCells, br, bc);
             }
         }
 
-        // 4. Aplicar Estilos de Error
         applyErrorStyles(errorCells);
     }
 
-    /**
-     * Helper para `validateBoard`. Comprueba duplicados en una fila o columna.
-     * @param byRow Si es true, comprueba fila. Si es false, comprueba columna.
-     */
-    private void findDuplicates(int[][] board, boolean[][] errors, int startRow, int startCol, int endRow, int endCol, boolean byRow) {
+    // (Métodos findDuplicates y findDuplicatesInBlock... son idénticos a la versión anterior)
+
+    private void findDuplicates(ArrayList<ArrayList<Integer>> board, ArrayList<ArrayList<Boolean>> errors, int startRow, int startCol, int endRow, int endCol, boolean byRow) {
         Set<Integer> seen = new HashSet<>();
         Set<Integer> duplicates = new HashSet<>();
-
         for (int r = startRow; r <= endRow; r++) {
             for (int c = startCol; c <= endCol; c++) {
-                int val = board[r][c];
+                int val = board.get(r).get(c);
                 if (val != 0) {
                     if (!seen.add(val)) {
                         duplicates.add(val);
@@ -154,28 +216,23 @@ public class SudokuController {
                 }
             }
         }
-
         if (!duplicates.isEmpty()) {
             for (int r = startRow; r <= endRow; r++) {
                 for (int c = startCol; c <= endCol; c++) {
-                    if (duplicates.contains(board[r][c])) {
-                        errors[r][c] = true;
+                    if (duplicates.contains(board.get(r).get(c))) {
+                        errors.get(r).set(c, true);
                     }
                 }
             }
         }
     }
 
-    /**
-     * Helper para `validateBoard`. Comprueba duplicados en un bloque 2x3.
-     */
-    private void findDuplicatesInBlock(int[][] board, boolean[][] errors, int startRow, int startCol) {
+    private void findDuplicatesInBlock(ArrayList<ArrayList<Integer>> board, ArrayList<ArrayList<Boolean>> errors, int startRow, int startCol) {
         Set<Integer> seen = new HashSet<>();
         Set<Integer> duplicates = new HashSet<>();
-
         for (int r = startRow; r < startRow + 2; r++) {
             for (int c = startCol; c < startCol + 3; c++) {
-                int val = board[r][c];
+                int val = board.get(r).get(c);
                 if (val != 0) {
                     if (!seen.add(val)) {
                         duplicates.add(val);
@@ -183,84 +240,129 @@ public class SudokuController {
                 }
             }
         }
-
         if (!duplicates.isEmpty()) {
             for (int r = startRow; r < startRow + 2; r++) {
                 for (int c = startCol; c < startCol + 3; c++) {
-                    if (duplicates.contains(board[r][c])) {
-                        errors[r][c] = true;
+                    if (duplicates.contains(board.get(r).get(c))) {
+                        errors.get(r).set(c, true);
                     }
                 }
             }
         }
     }
 
+
     /**
-     * Helper para `validateBoard`. Aplica el borde rojo a las celdas con errores.
+     * Aplica el borde rojo de error (HU-4) [cite: 88, 91]
      */
-    private void applyErrorStyles(boolean[][] errorCells) {
+    private void applyErrorStyles(ArrayList<ArrayList<Boolean>> errorCells) {
         for (int r = 0; r < 6; r++) {
             for (int c = 0; c < 6; c++) {
-                TextField cell = cells[r][c];
-                String baseStyle = cell.isEditable() ? "-fx-alignment: center;" :
-                        "-fx-alignment: center; -fx-background-color: #f0f0f0; -fx-font-weight: bold;";
+                TextField cell = cells.get(r).get(c);
+                String currentStyle = cell.getStyle();
 
-                if (errorCells[r][c]) {
-                    // Criterio de Aceptación (Historia 3): Notificación visual (borde rojo)
+                // Preservar el estilo de "pista" o "ayuda" si no hay error
+                String baseStyle;
+                if (currentStyle.contains("-fx-background-color: #f0f0f0")) { // Pista inicial
+                    baseStyle = "-fx-alignment: center; -fx-background-color: #f0f0f0; -fx-font-weight: bold;";
+                } else if (currentStyle.contains("-fx-background-color: #a0e0a0")) { // Ayuda
+                    baseStyle = "-fx-alignment: center; -fx-background-color: #a0e0a0;";
+                } else { // Celda normal editable
+                    baseStyle = "-fx-alignment: center;";
+                }
+
+                if (errorCells.get(r).get(c)) {
                     cell.setStyle(baseStyle + " -fx-border-color: red; -fx-border-width: 2;");
                 } else {
-                    // Restablece el estilo si no hay error
                     cell.setStyle(baseStyle + " -fx-border-color: null;");
                 }
             }
         }
     }
 
-    /**
-     * Convierte el texto de las celdas (String) en una matriz de enteros (int).
-     * Las celdas vacías se convierten en 0.
-     */
-    private int[][] getBoardModel() {
-        int[][] board = new int[6][6];
+    // (Método getBoardModel... idéntico)
+    private ArrayList<ArrayList<Integer>> getBoardModel() {
+        ArrayList<ArrayList<Integer>> board = new ArrayList<>();
         for (int r = 0; r < 6; r++) {
+            ArrayList<Integer> rowList = new ArrayList<>();
             for (int c = 0; c < 6; c++) {
-                board[r][c] = parseIntSafe(cells[r][c].getText());
+                int val = parseIntSafe(cells.get(r).get(c).getText());
+                rowList.add(val);
             }
+            board.add(rowList);
         }
         return board;
     }
 
-    /**
-     * Convierte un String a int de forma segura. Devuelve 0 si está vacío o no es válido.
-     */
+    // (Método parseIntSafe... idéntico)
     private int parseIntSafe(String text) {
-        if (text == null || text.isEmpty()) {
-            return 0;
-        }
-        try {
-            return Integer.parseInt(text);
-        } catch (NumberFormatException e) {
-            return 0;
+        if (text == null || text.isEmpty()) return 0;
+        try { return Integer.parseInt(text); }
+        catch (NumberFormatException e) { return 0; }
+    }
+
+    // (Método populateCellsArrayList... idéntico)
+    private void populateCellsArrayList() {
+        ArrayList<TextField> allCells = new ArrayList<>(Arrays.asList(
+                cell00, cell01, cell02, cell03, cell04, cell05,
+                cell10, cell11, cell12, cell13, cell14, cell15,
+                cell20, cell21, cell22, cell23, cell24, cell25,
+                cell30, cell31, cell32, cell33, cell34, cell35,
+                cell40, cell41, cell42, cell43, cell44, cell45,
+                cell50, cell51, cell52, cell53, cell54, cell55
+        ));
+        cells.clear();
+        for (int r = 0; r < 6; r++) {
+            ArrayList<TextField> rowList = new ArrayList<>();
+            for (int c = 0; c < 6; c++) {
+                rowList.add(allCells.get(r * 6 + c));
+            }
+            cells.add(rowList);
         }
     }
 
+    // --- MÉTODOS AYUDANTES (Helpers) ---
+
     /**
-     * Llena la matriz `cells[][]` con las referencias FXML inyectadas.
-     * Esto hace que el acceso a las celdas (ej. cells[2][3]) sea programático.
+     * : Helper para mostrar alertas (Usado por HU-2 y HU-5)
      */
-    private void populateCellsArray() {
-        cells = new TextField[6][6];
-        cells[0][0] = cell00; cells[0][1] = cell01; cells[0][2] = cell02;
-        cells[0][3] = cell03; cells[0][4] = cell04; cells[0][5] = cell05;
-        cells[1][0] = cell10; cells[1][1] = cell11; cells[1][2] = cell12;
-        cells[1][3] = cell13; cells[1][4] = cell14; cells[1][5] = cell15;
-        cells[2][0] = cell20; cells[2][1] = cell21; cells[2][2] = cell22;
-        cells[2][3] = cell23; cells[2][4] = cell24; cells[2][5] = cell25;
-        cells[3][0] = cell30; cells[3][1] = cell31; cells[3][2] = cell32;
-        cells[3][3] = cell33; cells[3][4] = cell34; cells[3][5] = cell35;
-        cells[4][0] = cell40; cells[4][1] = cell41; cells[4][2] = cell42;
-        cells[4][3] = cell43; cells[4][4] = cell44; cells[4][5] = cell45;
-        cells[5][0] = cell50; cells[5][1] = cell51; cells[5][2] = cell52;
-        cells[5][3] = cell53; cells[5][4] = cell54; cells[5][5] = cell55;
+    private Optional<ButtonType> showAlert(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null); // No usamos header
+        alert.setContentText(content);
+        return alert.showAndWait();
+    }
+
+    /**
+     * Helper para HU-5. Verifica si un número es seguro
+     * para colocar en una celda específica.
+     */
+    private boolean isSafe(int row, int col, int num, ArrayList<ArrayList<Integer>> board) {
+        // 1. Comprobar Fila
+        for (int c = 0; c < 6; c++) {
+            if (board.get(row).get(c) == num) {
+                return false;
+            }
+        }
+        // 2. Comprobar Columna
+        for (int r = 0; r < 6; r++) {
+            if (board.get(r).get(col) == num) {
+                return false;
+            }
+        }
+        // 3. Comprobar Bloque 2x3
+        int blockStartRow = (row / 2) * 2;
+        int blockStartCol = (col / 3) * 3;
+        for (int r = blockStartRow; r < blockStartRow + 2; r++) {
+            for (int c = blockStartCol; c < blockStartCol + 3; c++) {
+                if (board.get(r).get(c) == num) {
+                    return false;
+                }
+            }
+        }
+
+        // Si pasa las 3 pruebas, es un número seguro
+        return true;
     }
 }
